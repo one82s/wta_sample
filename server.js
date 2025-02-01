@@ -47,34 +47,55 @@ app.get('/', async (request, response) => {
     response.sendFile(__dirname + '/names.html');
 });
 
-// app.get('/names/:id', async (request, response) => {
-//     const id = request.params.id;
-//     console.log('Name ID is: ', id);
-//     const name = await Names.findById(id);
-//     response.status(200).json(name);
-// });
 
-
+// Get list of names from MongoDB
 app.get('/names', async (request, response) => {
     console.log('here in get names');
     const names = await Names.find();
     response.status(200).json(names);
 });
 
+// Fetching the data to insert from External API
 app.post('/names', async (request, response) => {
     console.log('here in create user');
+    
+    
+    const nameFromRequest = request.body.name
+    const external_API_URL = 'https://api.genderize.io?name='
+    let data = '{}';
+    try {
+        // Send a GET request to the API
+        const response = await fetch(external_API_URL+nameFromRequest);
+    
+    
+        // Check if the request was successful
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+    
+    
+        // Parse the JSON response
+        data = await response.json();
+    
+    
+        // Log the data for now (we will display it later)
+        console.log(data);
+    } catch (error) {
+        console.error('Error fetching data:', error.message);
+    }
     const name = new Names({
-        name : request.body.name,
-        gender : request.body.gender,
-        count : request.body.count,
-        probability : request.body.probability,
+        name : data.name,
+        gender : data.gender,
+        count : data.count,
+        probability : data.probability,
     });
+    
     const newItem = await name.save();
     response.status(201).json({scuccess:true});
 });
 
 
-
+// Get id that will be updated
 app.get('/name/:id', async (request, response) => {
     console.log('here in get name ');
     const id = request.params.id;
@@ -83,6 +104,7 @@ app.get('/name/:id', async (request, response) => {
     response.status(200).json(name);
 });
 
+// Updated data from the ID that will be passed from UI
 app.put('/name/:id', async (request, response) => {
     console.log('here in put name ');
     const nameId = request.params.id;
@@ -97,7 +119,7 @@ app.put('/name/:id', async (request, response) => {
     response.status(200).json(updatedItem);
 });
 
-
+// Delete name based on the ID passed from the UI
 app.delete('/name/:id', async (request, response) => {
     console.log('here in delete name ');
     const nameId = request.params.id;

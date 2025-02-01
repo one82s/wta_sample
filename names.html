@@ -54,43 +54,73 @@ var nameModalElement;
 
 function makeModal(title, button_value, callback)
 {
-    let html = `
-    <div class="modal" tabindex="-1" id="nameModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form id="nameform">
-                    <div class="modal-header">
-                        <h5 class="modal-title">${title}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    let html = '';
+    if(button_value !== 'Add') {
+        html = `
+            <div class="modal" tabindex="-1" id="nameModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form id="nameform">
+                            <div class="modal-header">
+                                <h5 class="modal-title">${title}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label>Name</label>
+                                    <input type="text" name="name" id="name" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label>Gender</label>
+                                    <input type="text" name="gender" id="gender" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label>Count</label>
+                                    <input type="text" name="count" id="count" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label>Probability</label>
+                                    <input type="text" name="probability" id="probability" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="name_id" id="name_id" />
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="${callback}()">${button_value}</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-body">
-                         <div class="mb-3">
-                            <label>Name</label>
-                            <input type="text" name="name" id="name" class="form-control" />
-                        </div>
-                        <div class="mb-3">
-                            <label>Gender</label>
-                            <input type="text" name="gender" id="gender" class="form-control" />
-                        </div>
-                        <div class="mb-3">
-                            <label>Count</label>
-                            <input type="text" name="count" id="count" class="form-control" />
-                        </div>
-                        <div class="mb-3">
-                            <label>Probability</label>
-                            <input type="text" name="probability" id="probability" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" name="name_id" id="name_id" />
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="${callback}()">${button_value}</button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-    `;
+            `;
+    }
+    else{
+        html = `
+            <div class="modal" tabindex="-1" id="nameModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form id="nameform">
+                            <div class="modal-header">
+                                <h5 class="modal-title">${title}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label>Name</label>
+                                    <input type="text" name="name" id="name" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="${callback}()">${button_value}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            `;
+    }
+    
 
     document.querySelector('#modalArea').innerHTML = html;
 
@@ -140,7 +170,7 @@ function getData(){
                     <td>${row.name}</td>
                     <td>${row.gender}</td>
                     <td>${row.count}</td>
-                    <td>${row.probability.toString()}</td>
+                    <td>${row.probability}</td>
                     <td>
                         <button type="button" class="btn btn-warning btn-sm" onclick="fetchSingleData('${row._id}')">Edit</button>
                         <button type="button" class="btn btn-danger btn-sm" onclick="deleteData('${row._id}')">Delete</button>
