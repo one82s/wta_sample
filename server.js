@@ -1,3 +1,5 @@
+
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -21,33 +23,86 @@ connect.once('open', () => {
     console.log('Connected to MongoDB');
 });
 
-app.listen(PORT, ()=>{console.log('Server is running on port ${PORT}');});
+app.listen(PORT, ()=>{console.log('Server is running on port', PORT);});
 	
-const usersSchema = new mongoose.Schema({
-    userId : String,
-    userName : String,
+const namesSchema = new mongoose.Schema({
+    name : String,
+    gender : String,
+    count: Number,
+    probability: mongoose.Schema.Types.Decimal128,
 });
 
-const Users = mongoose.model('users', usersSchema);
+
+namesSchema.set('toJSON', {
+    transform: (doc, ret) => {
+        ret.probability = ret.probability.toString();
+      return ret;
+    },
+  });
+
+const Names = mongoose.model('names', namesSchema);
 
 app.get('/', async (request, response) => {
     console.log('Connected to Web App');
-    response.sendFile(__dirname + '/user.html');
+    response.sendFile(__dirname + '/names.html');
 });
 
+// app.get('/names/:id', async (request, response) => {
+//     const id = request.params.id;
+//     console.log('Name ID is: ', id);
+//     const name = await Names.findById(id);
+//     response.status(200).json(name);
+// });
 
-app.post('/users', async (request, response) => {
+
+app.get('/names', async (request, response) => {
+    console.log('here in get names');
+    const names = await Names.find();
+    response.status(200).json(names);
+});
+
+app.post('/names', async (request, response) => {
     console.log('here in create user');
-    const user = new Users({
-        userId : request.body.userId,
-        userName : request.body.userName,
+    const name = new Names({
+        name : request.body.name,
+        gender : request.body.gender,
+        count : request.body.count,
+        probability : request.body.probability,
     });
-    const newItem = await user.save();
+    const newItem = await name.save();
     response.status(201).json({scuccess:true});
 });
 
-app.get('/users', async (request, response) => {
-    console.log('here in get users');
-    const users = await Users.find();
-    response.status(200).json(users);
+
+
+app.get('/name/:id', async (request, response) => {
+    console.log('here in get name ');
+    const id = request.params.id;
+    console.log('Name ID is: ', id);
+    const name = await Names.findById(id);
+    response.status(200).json(name);
+});
+
+app.put('/name/:id', async (request, response) => {
+    console.log('here in put name ');
+    const nameId = request.params.id;
+    console.log('Name ID: ', nameId);
+    // Fetch the user from the database
+    const nameModel = await Names.findById(nameId);
+    nameModel.name = request.body.name;
+    nameModel.gender = request.body.gender;
+    nameModel.count = request.body.count;
+    nameModel.probability = request.body.probability;
+    const updatedItem = await nameModel.save();
+    response.status(200).json(updatedItem);
+});
+
+
+app.delete('/name/:id', async (request, response) => {
+    console.log('here in delete name ');
+    const nameId = request.params.id;
+    // Fetch the user from the database
+    const nameModel = await Names.findById(nameId);
+    await nameModel.deleteOne();
+    response.status(200).json({ message : 'Deleted item' });
 });
