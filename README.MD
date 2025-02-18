@@ -18,3 +18,13 @@ http://localhost:3000/
 
 ## URL of External API used
 https://api.genderize.io?name=
+
+
+## OAuth requirements
+1. Installs the libraries necessary to handle OAuth authentication, user sessions, and Google API interactions.
+    - npm install passport passport-google-oauth20 express-session
+2. Using environment variables
+    - npm install dotenv 
+3. URL to test Google OAuth authentication
+http://localhost:3000/auth/google
+
