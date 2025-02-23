@@ -73,3 +73,11 @@ Save your credentials and copy the Client ID and Client Secret. These will be us
 3. URL to test Google OAuth authentication
 http://localhost:3000/auth/google
 
+
+### Week 8
+1. Checkout wta-branch-week8 
+2. Centralized error handling 
+  a. In server.js lines 17 -23
+3. Asynchronouse error handling using try/catch block
+4. Custom Error Handling - installed responser library
+ *** npm install responser ***
