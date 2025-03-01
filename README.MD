@@ -74,10 +74,21 @@ Save your credentials and copy the Client ID and Client Secret. These will be us
 http://localhost:3000/auth/google
 
 
-### Week 8
+### Week 8 ###
 1. Checkout wta-branch-week8 
 2. Centralized error handling 
   a. In server.js lines 17 -23
 3. Asynchronouse error handling using try/catch block
 4. Custom Error Handling - installed responser library
  *** npm install responser ***
+
+
+ ### Week 9 ###
+1. Checkout wta-branch-week9
+2. Install helmet.js
+  *** npm install helmet ***
+3. Code implementation is in server.js
+4. Test in Postman http://localhost:3000/
+  a. Use Google OAuth to access the url
+  b. Send a GET request
+5.  Vefiry response header if it contains policies comming from helmet.js 
