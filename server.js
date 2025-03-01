@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const responser = require("responser").default;
 const db = require("./lib/db");
 const { passport, app } = require("./lib/auth");
+const helmet = require('helmet');
 
 const PORT = 3000;
 
@@ -14,6 +15,7 @@ app.use(express.static(__dirname));
 
 app.use(responser);
 
+app.use(  helmet());
 // Used for centralized error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -27,6 +29,7 @@ app.listen(PORT, () => {
 });
 
 app.get("/", (req, res) => {
+  console.log("'Helmet is protecting this app!");
   res.send("<a href='/auth/google'>Login with Google</a>");
 });
 
