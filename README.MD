@@ -92,3 +92,20 @@ http://localhost:3000/auth/google
   a. Use Google OAuth to access the url
   b. Send a GET request
 5.  Vefiry response header if it contains policies comming from helmet.js 
+
+
+ ### Week 10 ###
+1. Checkout wta-branch-week10
+2. Install jest
+  *** npm install --save-dev jest ***
+3. Create a js file to be tested
+  *** example addition.js ***
+4. Create a js test file
+  *** example addition.test.js ***
+5. Add the following section in package.json
+{
+  "scripts": {
+    "test": "jest"
+  }
+}
+6. Run npm test to verify the output
