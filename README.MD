@@ -108,4 +108,9 @@ http://localhost:3000/auth/google
     "test": "jest"
   }
 }
-6. Run npm test to verify the output
+6. Run *** npm test *** to verify the output
+### Integration Testing ###
+7. Install supertest
+  *** npm install --save-dev supertest ***
+8. Follow the structure of newly created folders and files in this branch
+9. Run *** npm test *** to verify the output
